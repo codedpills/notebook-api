@@ -10,10 +10,13 @@ const db = mongoose.connect(
 );
 
 const PORT = process.env.PORT || 5000;
+const notebookRouter = require("./routes/notebookRouter")();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
+
+app.use("/api", notebookRouter);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Notebook app API");
