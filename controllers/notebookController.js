@@ -24,11 +24,11 @@ exports.getNotes = (req, res) => {
   if (req.query.noteTitle) {
     query.noteTitle = req.query.noteTitle;
   }
-  Notebook.find(query, (err, note) => {
+  Notebook.find(query, (err, notes) => {
     if (err) {
       return res.status(400).send(`Problem fetching notes: ${err}`);
     }
-    res.status(200).json(note);
+    res.status(200).json(notes);
   });
 };
 
@@ -41,7 +41,12 @@ exports.findNoteById = (req, res, next) => {
     if (err) {
       return res.status(400).send(err);
     }
-    req.note = note;
+    if (!note) {
+      return res.send("no item found");
+    }
+    if (note) {
+      req.note = note;
+    }
     return next();
   });
 };
