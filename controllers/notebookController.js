@@ -50,6 +50,17 @@ exports.getNote = (req, res) => {
   return res.status(200).json(req.note);
 };
 
-exports.updateNote = (req, res) => {};
+exports.updateNote = (req, res) => {
+  let { note } = req;
+  note.noteTitle = req.body.noteTitle;
+  note.noteDescription = req.body.noteDescription;
+  note.noteDate = req.body.noteDate;
+  note.save((err, note) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    res.status(201).json(note);
+  });
+};
 
 exports.deleteNote = (req, res) => {};
