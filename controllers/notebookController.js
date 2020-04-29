@@ -59,8 +59,15 @@ exports.updateNote = (req, res) => {
     if (err) {
       return res.status(400).send(err);
     }
-    res.status(201).json(note);
+    return res.status(201).json(note);
   });
 };
 
-exports.deleteNote = (req, res) => {};
+exports.deleteNote = (req, res) => {
+  req.note.remove((err) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    return res.status(200).send(`Note deleted successfully!`);
+  });
+};
