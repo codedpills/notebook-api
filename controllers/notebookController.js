@@ -19,9 +19,36 @@ exports.postNote = (req, res) => {
   });
 };
 
-exports.findNoteById = (req, res, next) => {};
+exports.getNotes = (req, res) => {
+  let query = {};
+  if (req.query.noteTitle) {
+    query.noteTitle = req.query.noteTitle;
+  }
+  Notebook.find(query, (err, note) => {
+    if (err) {
+      return res.status(400).send(`Problem fetching notes: ${err}`);
+    }
+    res.status(200).json(note);
+  });
+};
 
-exports.getNote = (req, res) => {};
+exports.findNoteById = (req, res, next) => {
+  const noteId = req.params.noteId;
+  if (!noteId) {
+    return res.status(400).send(`You need to pass a noteId`);
+  }
+  Notebook.findById(noteId, (err, note) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    req.note = note;
+    return next();
+  });
+};
+
+exports.getNote = (req, res) => {
+  return res.status(200).json(req.note);
+};
 
 exports.updateNote = (req, res) => {};
 
